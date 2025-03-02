@@ -12,7 +12,8 @@ Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'display'])->name('profile.display');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -26,7 +27,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/connections', [ConnectionController::class, 'index'])->name('connections.index');
     Route::post('/connections/{user}', [ConnectionController::class, 'sendRequest'])->name('connections.send');
-    Route::post('/connections/{user}/accept', [ConnectionController::class, 'acceptRequest'])->name('connections.accept');
+    Route::post('/connections/accept/{user}', [ConnectionController::class, 'acceptRequest'])->name('connections.accept');
     Route::post('/connections/{user}/ignore', [ConnectionController::class, 'ignoreRequest'])->name('connections.ignore');
     Route::delete('/connections/{user}', [ConnectionController::class, 'removeConnection'])->name('connections.remove');
 });
