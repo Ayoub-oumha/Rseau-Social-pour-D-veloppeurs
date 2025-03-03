@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/connections/accept/{user}', [ConnectionController::class, 'acceptRequest'])->name('connections.accept');
     Route::post('/connections/{user}/ignore', [ConnectionController::class, 'ignoreRequest'])->name('connections.ignore');
     Route::delete('/connections/{user}', [ConnectionController::class, 'removeConnection'])->name('connections.remove');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
+
+   
 });
 Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
