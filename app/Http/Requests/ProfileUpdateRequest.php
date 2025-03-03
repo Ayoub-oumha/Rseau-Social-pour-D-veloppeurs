@@ -24,13 +24,13 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
-                'headline' => ['required', 'string'],
-                'work' => ['required', 'string'],
-                'location' => ['required', 'string'],
-                'bio' => ['required', 'string'],
-                'github_url' => ['required', 'string'],
-                'website' => ['required', 'string'],
             ],
+            'headline' => ['required', 'string'],
+            'work' => ['required', 'string'],
+            'location' => ['required', 'string'],
+            'bio' => ['required', 'string'],
+            'github_url' => ['required', 'string'],
+            'website' => ['required', 'string'],
         ];
     }
 }
