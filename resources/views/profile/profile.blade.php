@@ -48,7 +48,7 @@
               <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                 <a href="{{route('profile.edit')}}" type="button" class="inline-flex justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-lime-600 hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
                   <i class="fas fa-pen -ml-1 mr-2"></i>
-                  <span>Edit profile</span>
+                  <span >Edit profile</span>
                 </a>
               </div>
             </div>
