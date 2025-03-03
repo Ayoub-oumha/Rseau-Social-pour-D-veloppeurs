@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommenterController;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
@@ -34,6 +35,11 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
+
+   
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/commontes/store', [CommenterController::class, 'store'])->name('comments.store');
 
    
 });

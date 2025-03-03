@@ -12,8 +12,6 @@ class ConnectionController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-   
         $pandingRequests = $user->pendingRequests;
         $friends = $user->friendships;
 
@@ -39,16 +37,7 @@ class ConnectionController extends Controller
         $otheruser->status = $connection ? $connection->status : 'none';
         return $otheruser;
         });
-        // foreach($otherusers as $otheruser){
-        //     echo $otheruser->name;
-        //     echo $otheruser->status;
-        //     echo "<br>";
-        // }
-        // dd($otherusers);
-        
-        
-        // dd($otherusers);
-       
+      
         return view('friends.allfriends' , compact('connections' , 'pandingRequests', 'followers', 'following' , 'otherusers'));
         // return view('friends.allfriends', compact('connections', 'pendingRequests', 'suggestions', 'stats'));
     }
