@@ -3,11 +3,15 @@
 use App\Http\Controllers\CommenterController;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\likes;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Message;
+use App\Http\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
+Route::get('/', [HomeController::class, 'index'])->middleware('auth')->name('dashboard');
 
 // Route::get('/', function () {
 //     return view('dashboard');
@@ -34,9 +38,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/connections/{user}', [ConnectionController::class, 'removeConnection'])->name('connections.remove');
 });
 Route::middleware(['auth'])->group(function () {
+    Route::get('/message', [Message::class, 'index'])->name('message.index');
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/posts/{post}/like', [likes::class, 'like'])->name('posts.like');
+    Route::post('/posts/{post}/unlike', [likes::class, 'unlike'])->name('posts.unlike');
+});
+Route::middleware(['auth'])->group(function () {
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
-
-   
 });
 Route::middleware(['auth'])->group(function () {
     Route::post('/commontes/store', [CommenterController::class, 'store'])->name('comments.store');
@@ -47,5 +56,11 @@ Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
    
 });
+
+Route::get('/tweet', [TweetController::class, 'create'])->name('tweets.create');
+Route::post('/tweets', [TweetController::class, 'store'])->name('tweets.store');
+Route::view('pusher1', 'pusher1');
+Route::view('pusher2', 'pusher2');
+
 
 require __DIR__.'/auth.php';
