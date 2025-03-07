@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class likes extends Model
 {
-    protected $fileable = [
+    protected $fillable  = [
         'user_id',
         'post_id'
     ];

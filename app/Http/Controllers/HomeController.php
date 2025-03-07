@@ -20,21 +20,13 @@ class HomeController extends Controller
         $language = new language() ;
         $languages = $language->where("user_id" , $userId)->get() ;
         $connections = $user->connections ;
-    //    $posts = $user->posts ;
-    //    dd($posts) ;
-        // dd($languages) ;
-      
-        // dd($request) ;
-      
-       //all commenters of users and info of user
+        
+        // $totalLikes = 0;
         // foreach ($posts as $post) {
-        //     dd($post->comments);
+        //     $totalLikes += $post->likes->count();
         // }
-        
-        
-        
-       
-       
+        // echo $totalLikes;
+        // dd($posts->pluck('likes')) ;
         // dd($posts);
         return view('dashboard' , compact('posts' , 'user' , 'languages' , 'connections' , 'posts' ));
     }
