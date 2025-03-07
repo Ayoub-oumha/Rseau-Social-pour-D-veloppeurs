@@ -41,9 +41,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/message', [Message::class, 'index'])->name('message.index');
 });
 Route::middleware('auth')->group(function () {
-    Route::post('/posts/{post}/like', [likes::class, 'like'])->name('posts.like');
-    Route::post('/posts/{post}/unlike', [likes::class, 'unlike'])->name('posts.unlike');
+    // Route::post('/posts/{post}/like', [likes::class, 'like'])->name('posts.like');
+    // Route::post('/posts/{post}/unlike', [likes::class, 'unlike'])->name('posts.unlike');
+    // Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::post('/posts/{post}/like', [likes::class, 'toggleLike'])->name('posts.like');
+    Route::get('/posts/{post}/check-like', [likes::class, 'checkLike'])->name('posts.checkLike');
+
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', function (){
+        
+        return view('notifications.notifications');
+    })->name('notifications');
+   
+});
+
+
+
+
+
+
+
+
+
+
+
 Route::middleware(['auth'])->group(function () {
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
 });
