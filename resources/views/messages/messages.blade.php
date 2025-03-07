@@ -35,21 +35,39 @@
                             </div>
                             
                             <!-- Other conversations -->
+                            @foreach ($connections as $connection)
                             <div class="px-4 py-3 flex items-center hover:bg-gray-50 cursor-pointer">
                                 <div class="relative flex-shrink-0">
-                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="h-12 w-12 rounded-full object-cover">
+                                    @if(!empty($connection->profile_image))
+                                        <img src="{{ $connection->profile_image }}" alt="{{ $connection->name }}" class="h-12 w-12 rounded-full object-cover">
+                                    @else
+                                        <div class="h-12 w-12 rounded-full flex items-center justify-center bg-gray-300 text-gray-600 font-medium uppercase">
+                                            @php
+                                                $nameParts = explode(' ', $connection->name);
+                                                $initials = substr($nameParts[0], 0, 1);
+                                                if (count($nameParts) > 1) {
+                                                    $initials .= substr($nameParts[1], 0, 1);
+                                                } else {
+                                                    $initials .= substr($nameParts[0], 1, 1);
+                                                }
+                                            @endphp
+                                            {{ $initials }}
+                                        </div>
+                                    @endif
                                     <div class="absolute bottom-0 right-0 bg-gray-400 h-3 w-3 rounded-full border-2 border-white"></div>
                                 </div>
                                 <div class="ml-3 flex-1">
                                     <div class="flex justify-between items-center">
-                                        <h3 class="text-sm font-semibold text-gray-900">Sarah Wilson</h3>
+                                        <h3 class="text-sm font-semibold text-gray-900">{{$connection->name}}</h3>
                                         <span class="text-xs text-gray-500">Yesterday</span>
                                     </div>
-                                    <p class="text-sm text-gray-600 truncate">Thanks for the help with the API integration!</p>
+                                    <p class="text-sm text-gray-600 truncate">{{$connection->headline}}</p>
                                 </div>
-                            </div>
+                            </div>  
+                            @endforeach
+                           
                             
-                            <div class="px-4 py-3 flex items-center hover:bg-gray-50 cursor-pointer">
+                            {{-- <div class="px-4 py-3 flex items-center hover:bg-gray-50 cursor-pointer">
                                 <div class="relative flex-shrink-0">
                                     <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="User" class="h-12 w-12 rounded-full object-cover">
                                 </div>
@@ -60,7 +78,7 @@
                                     </div>
                                     <p class="text-sm text-gray-600 truncate">When is the next team meetup?</p>
                                 </div>
-                            </div>
+                            </div> --}}
                             
                             <!-- Add more conversations as needed -->
                             <!-- Repeat the structure for more conversations -->
