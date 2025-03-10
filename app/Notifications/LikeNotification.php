@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\DatabaseMessage;
 use App\Models\User;
 use App\Models\Post;
 
-class PostCreatedNotification extends Notification
+class LikeNotification extends Notification
 {
     use Queueable;
 
@@ -22,7 +22,7 @@ class PostCreatedNotification extends Notification
     public function __construct($liker)
 
     {
-        $this->liker = $liker;
+        $this->liker = $liker->user->name;
         // $this->post = $post;
     }
 
@@ -48,6 +48,6 @@ class PostCreatedNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database', 'broadcast']; // Save to database and broadcast in real-time
+        return ['database', 'broadcast'];
     }
 }

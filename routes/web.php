@@ -63,6 +63,16 @@ Route::middleware(['auth'])->group(function () {
     })->name('notifications');
    
 });
+Route::get('/notifications/all', function() {
+    return view('notifications.index', [
+        'notifications' => auth()->user()->notifications()->paginate(10)
+    ]);
+})->middleware(['auth'])->name('notifications.all');
+
+Route::post('/notifications/{id}/mark-as-read', function($id) {
+    auth()->user()->notifications()->findOrFail($id)->markAsRead();
+    return back();
+})->middleware(['auth'])->name('notifications.markAsRead');
 
 
 
