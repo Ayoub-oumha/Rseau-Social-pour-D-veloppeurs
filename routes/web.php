@@ -67,7 +67,7 @@ Route::get('/notifications/all', function() {
     return view('notifications.index', [
         'notifications' => auth()->user()->notifications()->paginate(10)
     ]);
-})->middleware(['auth'])->name('notifications.all');
+})->middleware(['auth'])->name('notifications');
 
 Route::post('/notifications/{id}/mark-as-read', function($id) {
     auth()->user()->notifications()->findOrFail($id)->markAsRead();
