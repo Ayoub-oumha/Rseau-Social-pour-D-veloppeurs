@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\EventLikeNotification;
+
 class likes extends Controller
 {
     // public function like(Post $post)
@@ -35,17 +37,24 @@ class likes extends Controller
     public function toggleLike(Post $post)
     {
         $like = $post->likes()->where('user_id', auth()->id())->first();
-        
+
         if ($like) {
             $like->delete();
             $isLiked = false;
         } else {
+            if ($post->user_id !== auth()->id()) {
+                event(new EventLikeNotification([
+                    'liker' => auth()->user()->name,
+                    'message' => auth()->user()->name . ' liked your post',
+                ]));
+            }
             $post->likes()->create([
                 'user_id' => auth()->id()
             ]);
             $isLiked = true;
         }
-        
+
+
         return response()->json([
             'success' => true,
             'likesCount' => $post->likes()->count(),
@@ -59,7 +68,4 @@ class likes extends Controller
             'isLiked' => $post->likes()->where('user_id', auth()->id())->exists()
         ]);
     }
-
-
-
 }
