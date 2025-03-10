@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommenterController;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\HomeController;
@@ -41,12 +42,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/message', [Message::class, 'index'])->name('message.index');
 });
 Route::middleware('auth')->group(function () {
-    // Route::post('/posts/{post}/like', [likes::class, 'like'])->name('posts.like');
-    // Route::post('/posts/{post}/unlike', [likes::class, 'unlike'])->name('posts.unlike');
-    // Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+   
     Route::post('/posts/{post}/like', [likes::class, 'toggleLike'])->name('posts.like');
     Route::get('/posts/{post}/check-like', [likes::class, 'checkLike'])->name('posts.checkLike');
 
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/conversations', [ChatController::class, 'getConversations'])->name('chat.conversations');
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/messages', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('/chat/unread', [ChatController::class, 'getUnreadCount'])->name('chat.unread');
+    Route::post('/chat/messages/{messageId}/read', [ChatController::class, 'markAsRead'])->name('chat.read');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -56,13 +63,16 @@ Route::middleware(['auth'])->group(function () {
     })->name('notifications');
    
 });
+Route::get('/notifications/all', function() {
+    return view('notifications.index', [
+        'notifications' => auth()->user()->notifications()->paginate(10)
+    ]);
+})->middleware(['auth'])->name('notifications');
 
-
-
-
-
-
-
+Route::post('/notifications/{id}/mark-as-read', function($id) {
+    auth()->user()->notifications()->findOrFail($id)->markAsRead();
+    return back();
+})->middleware(['auth'])->name('notifications.markAsRead');
 
 
 

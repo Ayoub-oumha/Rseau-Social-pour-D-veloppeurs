@@ -16,6 +16,37 @@ x
 
         <!-- Scripts -->
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+        <!-- Scripts -->
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'user' => Auth::user(),
+                'pusherKey' => config('broadcasting.connections.pusher.key'),
+                'pusherCluster' => config('broadcasting.connections.pusher.options.cluster')
+            ]) !!};
+        </script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <style>
+            .toast-info .toast-message {
+                display: flex;
+                align-items: center;
+            }
+            .toast-info .toast-message i {
+                margin-right: 10px;
+            }
+            .toast-info .toast-message .notification-content {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -56,7 +87,7 @@ x
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                                 </svg>
                             </a>
-                            <a href="{{route("message.index")}}" class="flex items-center space-x-1 hover:text-lime-400">
+                            <a href="{{route("chat.index")}}" class="flex items-center space-x-1 hover:text-lime-400">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                 </svg>
@@ -103,5 +134,43 @@ x
                 {{ $slot }}
             </main>
         </div>
+        <script>
+            Pusher.logToConsole = true;
+    
+            // var pusher = new Pusher('d66752e68448d3ccdaf4', {
+            //     cluster: 'eu'
+            // });
+            var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+            });
+    
+            var channel = pusher.subscribe('like_notification');
+            channel.bind('like.notification', function(data) {
+                if (data) {
+                    toastr.info(
+                        `<div class="notification-content">
+                            <i class="fas fa-user"></i> <span>${data.liker}</span>
+                            <i class="fas fa-book" style="margin-left: 20px;"></i> <span>${data.message}</span>
+                        </div>`,
+                        'New Post Notification',
+                        {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 6000,
+                            extendedTimeOut: 1000,
+                            positionClass: 'toast-top-right',
+                            enableHtml: true
+                        }
+                    );
+                } else {
+                    console.error('Invalid data received:', data);
+                }
+            });
+    
+            pusher.connection.bind('connected', function() {
+                console.log('Pusher connected');
+            });
+        </script>
     </body>
 </html>

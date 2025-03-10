@@ -102,7 +102,7 @@
                                     <p class="text-xs text-gray-600 truncate">{{ $connection->headline ?? 'Developer' }}</p>
                                     <p class="text-xs text-gray-500">Connected {{ $connection->pivot?->created_at->diffForHumans() ?? 'recently' }}</p>
                                     <div class="flex space-x-2 mt-3">
-                                        <form action="" class="w-1/2">  
+                                        <form action="{{route("chat.index")}}" class="w-1/2" method="GET">  
                                             <button type="submit"  class="mt-2 w-full px-3 py-1.5 border border-lime-600 text-lime-600 rounded-full hover:bg-lime-50 text-sm flex items-center justify-center">message</button>
                                         </form>
                                         <form action="{{route("connections.remove" ,  $connection->id  )}}" method="POST" class="w-1/2">
